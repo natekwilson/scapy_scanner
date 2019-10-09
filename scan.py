@@ -5,10 +5,12 @@ import scapy.all as scapy
 
 #this is the main scanning function, it's two parameters are the port and ip from the parameters object
 def scan(ip, port):
-	arp_packet = scapy.ARP(pdst= ip)
-	arp_packet.dport = port
+	tosend_arp_packet = scapy.ARP(pdst= ip)
+	tosend_arp_packet.dport = port
 	broadcast_packet = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
-	arp_broadcast_packet = broadcast_packet/arp_packet
+	
+	arp_broadcast_packet = broadcast_packet/tosend_arp_packet
+	
 	answered_list = scapy.srp(arp_broadcast_packet,timeout= 1, verbose=False)[0]	
 	found_list = []
 	for element in answered_list:
